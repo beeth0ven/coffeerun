@@ -4,6 +4,7 @@
 
 (function (window) {
   "use strict";
+  console.log('formhandler.js');
   var App = window.App || {};
   var $ = window.jQuery;
 
@@ -18,13 +19,20 @@
     }
   }
 
-  FormHandler.prototype.addSubmitHandler = function () {
+  FormHandler.prototype.addSubmitHandler = function (fn) {
     console.log('Setting submit handler for form');
     this.$formElement.on('submit', function (event) {
       event.preventDefault();
 
-      var data = $(this).serializeArray();
-      console.log(data);
+      var order = {};
+      $(this).serializeArray().forEach(function (item) {
+        order[item.name] = item.value;
+        console.log(item.name + ' is ' + item.value);
+      });
+      console.log(order);
+      fn(order);
+      this.reset();
+      this.elements[0].focus();
     })
   };
 
@@ -32,6 +40,3 @@
   window.App = App;
 
 })(window);
-
-// var fh = new App.FormHandler('[data-coffee-order="form"]');
-// fh.addSubmitHandler();

@@ -4,6 +4,7 @@
 
 (function (window) {
   "use strict";
+  console.log('datastore.js');
   var App = window.App || {};
 
   function DataStore() {

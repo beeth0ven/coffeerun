@@ -4,6 +4,7 @@
 
 (function (window) {
   "use strict";
+  console.log('truck.js');
   var App = window.App || {};
 
   function Truck(truckId, db) {

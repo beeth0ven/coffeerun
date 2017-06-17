@@ -5,6 +5,7 @@
 (function (window) {
   "use strict";
   console.log('formhandler.js');
+
   var App = window.App || {};
   var $ = window.jQuery;
 
@@ -17,7 +18,19 @@
     if (this.$formElement.length === 0) {
       throw new Error('Could not find element with selector: ' + selector);
     }
+
+    this.$strengthLevel = $('#strengthLevel');
+    this.$strengthValueLabel = $('#strengthValueLabel');
+    this.bindStrengthValueLabel();
   }
+
+  FormHandler.prototype.bindStrengthValueLabel = function () {
+    this.$strengthValueLabel.text(this.$strengthLevel.val() + '%');
+    this.$strengthLevel.on('input change', function (event) {
+      this.$strengthValueLabel.text(event.target.value + '%');
+      // this.$strengthValueLabel.style.color = 'red';
+    }.bind(this))
+  };
 
   FormHandler.prototype.addSubmitHandler = function (fn) {
     console.log('Setting submit handler for form');
@@ -33,7 +46,7 @@
       fn(order);
       this.reset();
       this.elements[0].focus();
-    })
+    });
   };
 
   App.FormHandler = FormHandler;

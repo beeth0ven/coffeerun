@@ -17,6 +17,11 @@
     this.db.add(order.emailAddress, order);
   };
 
+  Truck.prototype.getOrder = function (custormId) {
+    console.log('Getting order for ' + custormId);
+    this.db.get(custormId);
+  };
+
   Truck.prototype.deliverOrder = function (custormId) {
     console.log('Delivering order for ' + custormId);
     this.db.remove(custormId);

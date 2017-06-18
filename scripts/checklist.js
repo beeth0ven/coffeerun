@@ -33,14 +33,14 @@
       value: coffeeOder.emailAddress
     });
 
-    var description = coffeeOder.size + ' ';
+    var description = '[' + coffeeOder.strength + 'x] ';
+    description += coffeeOder.size + ' ';
     if (coffeeOder.flavor) {
       description += coffeeOder.flavor + ' ';
     }
 
     description += coffeeOder.coffee + ', ';
     description += ' (' + coffeeOder.emailAddress + ')';
-    description += ' [' + coffeeOder.strength + 'x]';
 
     $label.append($checkbox);
     $label.append(description);
@@ -49,10 +49,18 @@
     this.$element = $div;
   }
 
-  CheckList.prototype.addClickHandler = function (fn) {
-    this.$element.on('click', 'input', function (event) {
+  // CheckList.prototype.addClickHandler = function (fn) {
+  //   this.$element.on('click', 'input', function (event) {
+  //     var email = event.target.value;
+  //     this.removeRow(email);
+  //     fn(email);
+  //   }.bind(this));
+  // };
+
+  CheckList.prototype.addDoubleClickHandler = function (fn) {
+    this.$element.on('dblclick', 'input', function (event) {
+      console.log('on dblclick');
       var email = event.target.value;
-      this.removeRow(email);
       fn(email);
     }.bind(this));
   };

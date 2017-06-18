@@ -15,11 +15,15 @@
   var myTruck = new Truck('ncc-1701', new DataStore());
   window.myTruck = myTruck;
   var checkList = new CheckList(checklistSelector);
-  checkList.addClickHandler(myTruck.deliverOrder.bind(myTruck));
+  // checkList.addClickHandler(myTruck.deliverOrder.bind(myTruck));
   var formHandler = new FormHandler(formSelector);
   formHandler.addSubmitHandler(function (order) {
     myTruck.createOrder(order);
     checkList.addRow(order);
+  });
+  checkList.addDoubleClickHandler(function (email) {
+    var order = myTruck.getOrder(email);
+    formHandler.bindOrder(order).bind(formHandler);
   });
   console.log(formHandler);
 

@@ -36,6 +36,14 @@
     })
   };
 
+  FormHandler.prototype.bindOrder = function (order) {
+    console.log('FormHandler bindOrder');
+    this.$formElement.serializeArray().forEach(function (item) {
+      item.value = order[item.name];
+      console.log('Set ' + item.name + ' to ' + item.value);
+    })
+  };
+
   App.FormHandler = FormHandler;
   window.App = App;
 

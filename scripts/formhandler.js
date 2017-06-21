@@ -30,9 +30,11 @@
         console.log(item.name + ' is ' + item.value);
       });
       console.log(order);
-      fn(order);
-      this.reset();
-      this.elements[0].focus();
+      fn(order)
+        .then(function () {
+          this.reset();
+          this.elements[0].focus();
+        }.bind(this));
     })
   };
 

@@ -7,6 +7,7 @@
   console.log('formhandler.js');
   var App = window.App || {};
   var $ = window.jQuery;
+  var Rx = window.Rx;
 
   function FormHandler(selector) {
     if (!selector) {
@@ -19,23 +20,24 @@
     }
   }
 
-  FormHandler.prototype.addSubmitHandler = function (fn) {
-    console.log('Setting submit handler for form');
-    this.$formElement.on('submit', function (event) {
-      event.preventDefault();
+  FormHandler.prototype.rxNewOrder = function () {
+    return Rx.Observable.fromEvent(this.$formElement, 'submit')
+      .doOnNext(function (event) {
+        event.preventDefault();
+      })
+      .map(function (event) {
+        var order = {};
+        this.serializeArray().forEach(function (item) {
+          order[item.name] = item.value;
+          console.log(item.name + ' is ' + item.value);
+        });
+        return order;
+      }.bind(this.$formElement))
+  };
 
-      var order = {};
-      $(this).serializeArray().forEach(function (item) {
-        order[item.name] = item.value;
-        console.log(item.name + ' is ' + item.value);
-      });
-      console.log(order);
-      fn(order)
-        .then(function () {
-          this.reset();
-          this.elements[0].focus();
-        }.bind(this));
-    })
+  FormHandler.prototype.resetState = function () {
+    this.$formElement[0].reset();
+    this.$formElement[0].elements[0].focus();
   };
 
   FormHandler.prototype.addInputHandler = function (fn) {

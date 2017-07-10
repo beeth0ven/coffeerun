@@ -7,6 +7,7 @@
   console.log('remotedatastore.js');
   var App = window.App || {};
   var $ = window.jQuery;
+  var Rx = window.Rx;
 
   function RemoteDataStore(url) {
     if (!url) {

@@ -7,34 +7,28 @@
   console.log('datastore.js');
   var App = window.App || {};
   var Promise = window.Promise;
+  var Rx = window.Rx;
 
   function DataStore() {
     this.data = {};
   }
 
-  function promiseResolvedWith(value) {
-
-    return new Promise(function (resolve, reject) {
-      resolve(value);
-    });
-  }
-
   DataStore.prototype.add = function (key, val) {
     this.data[key] = val;
-    return promiseResolvedWith(null);
+    return Rx.Observable.just(val);
   };
 
   DataStore.prototype.get = function (key) {
-    return promiseResolvedWith(this.data[key]);
+    return Rx.Observable.just(this.data[key]);
   };
 
   DataStore.prototype.getAll = function () {
-    return promiseResolvedWith(this.data);
+    return Rx.Observable.just(this.data);
   };
 
   DataStore.prototype.remove = function (key) {
     delete this.data[key];
-    return promiseResolvedWith(null);
+    return Rx.Observable.just(key);
   };
 
   App.DataStore = DataStore;

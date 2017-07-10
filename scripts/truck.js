@@ -6,6 +6,7 @@
   "use strict";
   console.log('truck.js');
   var App = window.App || {};
+  var Rx = window.Rx;
 
   function Truck(truckId, db) {
     this.truckId = truckId;
@@ -24,7 +25,7 @@
 
   Truck.prototype.printOrders = function (printFn) {
     return this.db.getAll()
-      .then(function (orders) {
+      .subscribe(function (orders) {
         var customerIds = Object.keys(orders);
         console.log('Truck #' + this.truckId + ' has pending orders:');
         customerIds.forEach(function (id) {

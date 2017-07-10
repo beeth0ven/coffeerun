@@ -7,6 +7,7 @@
   console.log('checklist.js');
   var App = window.App || {};
   var $ = window.jQuery;
+  var Rx = window.Rx;
 
   function CheckList(selector) {
 
@@ -49,14 +50,12 @@
     this.$element = $div;
   }
 
-  CheckList.prototype.addClickHandler = function (fn) {
-    this.$element.on('click', 'input', function (event) {
-      var email = event.target.value;
-      fn(email)
-        .then(function () {
-          this.removeRow(email);
-        }.bind(this));
-    }.bind(this));
+  CheckList.prototype.rxSelectedOrder = function () {
+
+    return Rx.Observable.fromEvent(this.$element, 'click', 'input')
+      .map(function (event) {
+        return event.target.value;
+      })
   };
 
   CheckList.prototype.addRow = function (coffeeOder) {

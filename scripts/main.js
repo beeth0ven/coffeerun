@@ -15,18 +15,25 @@
   var FormHandler = App.FormHandler;
   var Validation = App.Validation;
   var CheckList = App.CheckList;
+  var Rx = window.Rx;
   // var remoteDs = new RemoteDataStore(SERVER_URL);
   var myTruck = new Truck('ncc-1701', new DataStore());
   window.myTruck = myTruck;
   var checkList = new CheckList(checklistSelector);
-  checkList.addClickHandler(myTruck.deliverOrder.bind(myTruck));
+  checkList.rxSelectedOrder()
+    .flatMapLatest(myTruck.deliverOrder.bind(myTruck))
+    .subscribe(function (id) {
+      checkList.removeRow(id);
+    });
+
   var formHandler = new FormHandler(formSelector);
-  formHandler.addSubmitHandler(function (order) {
-    return myTruck.createOrder(order)
-      .then(function () {
-        checkList.addRow(order);
-      });
-  });
+  formHandler.rxNewOrder()
+    .flatMapLatest(myTruck.createOrder.bind(myTruck))
+    .subscribe(function (order) {
+      console.log('subscribe order: ' + order);
+      formHandler.resetState();
+      checkList.addRow(order);
+    });
 
   formHandler.addInputHandler(Validation.isCompanyEmail);
   myTruck.printOrders(checkList.addRow.bind(checkList));
